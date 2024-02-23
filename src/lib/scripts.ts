@@ -195,7 +195,7 @@ export const redeem = async (
 
     const tx = new Transaction();
     const txId = await program.methods
-    .redeem(bump,new anchor.BN(100000000)).accounts({globalAuthority, user: anchorWallet.publicKey, oldTokenMint ,newTokenMint , newTokenAccount, oldTokenAccount , vault,  tokenProgram: new PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA")} )
+    .redeem(bump,new anchor.BN(amount * 1e8)).accounts({globalAuthority, user: anchorWallet.publicKey, oldTokenMint ,newTokenMint , newTokenAccount, oldTokenAccount , vault,  tokenProgram: new PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA")} )
     // .tokenTransferMintTo(bump, new anchor.BN(amount))
     .preInstructions(instructions)
     .transaction();
