@@ -15,7 +15,7 @@ import { TOKEN_PROGRAM_ID } from '@solana/spl-token';
 import { PROGRAM_ID as TOKEN_AUTH_RULES_ID } from "@metaplex-foundation/mpl-token-auth-rules";
 
 import { METAPLEX, MPL_DEFAULT_RULE_SET, findTokenRecordPda, getATokenAccountsNeedCreate, getAssociatedTokenAccount, getMasterEdition, getMetadata } from './util';
-import { GLOBAL_AUTHORITY_SEED, PROGRAM_ID, solConnection, TREASURY } from './constant';
+import { GLOBAL_AUTHORITY_SEED,VAULT_SEED, PROGRAM_ID, solConnection } from './constant';
 import { AnchorWallet, WalletContextState, useAnchorWallet } from '@solana/wallet-adapter-react';
 import { GlobalPool } from './types';
 import { IDL as GameIDL } from "./idl";
@@ -29,9 +29,20 @@ export const depositOldTx = async (
     if (anchorWallet.publicKey === null || anchorWallet.signTransaction == null) {
         return;
     }
+    const options = anchor.AnchorProvider.defaultOptions();
+    const provider = new anchor.AnchorProvider(solConnection, anchorWallet, options);
 
-    const provider = new anchor.AnchorProvider(solConnection, anchorWallet, anchor.AnchorProvider.defaultOptions());
-    const program = new anchor.Program(GameIDL as anchor.Idl, PROGRAM_ID, provider);
+    console.log("provider", provider);
+    console.log("anchor wallet",anchorWallet.publicKey)
+
+    
+    anchor.setProvider(provider);
+
+    const programId = new PublicKey(PROGRAM_ID);
+
+    console.log("prgram Id", programId, oldTokenMint)
+    const program = new anchor.Program(GameIDL as anchor.Idl, programId, provider);
+    
 
     const user = anchorWallet.publicKey;
 
@@ -40,39 +51,42 @@ export const depositOldTx = async (
         program.programId);
     // console.log("globalPool: ", globalPool.toBase58());
 
-    let oldTokenAccount = await getAssociatedTokenAccount( user, oldTokenMint);
+    
+  
+    const [vault, vault_bump] = PublicKey.findProgramAddressSync(
+        [Buffer.from(VAULT_SEED)],
+        program.programId
+    );
+
+
+    let oldTokenAccount = await getAssociatedTokenAccount(anchorWallet.publicKey,oldTokenMint);
     console.log("oldTokenAccount: ", oldTokenAccount.toBase58());
 
-    let tokenTreasury = await getAssociatedTokenAccount( TREASURY, oldTokenMint);
+    console.log("admin wallet", anchorWallet.publicKey)
+
+
+    let tokenTreasury = await getAssociatedTokenAccount(new PublicKey(globalAuthority), oldTokenMint);
     console.log("tokenTreasury: ", tokenTreasury.toBase58());
 
-    let {instructions, destinationAccounts} = await getATokenAccountsNeedCreate(solConnection, user, user, [newTokenMint]);
+    console.log("token treasury", tokenTreasury)
+
+    let newTokenAccount = await getAssociatedTokenAccount(anchorWallet.publicKey,newTokenMint);
+    console.log("newTokenAccount: ", newTokenAccount.toBase58());
+    
+    let { instructions, destinationAccounts } = await getATokenAccountsNeedCreate(
+        solConnection,
+        anchorWallet.publicKey,
+        anchorWallet.publicKey,
+        [newTokenMint]
+    );
+
+    // console.log("length", instructions.length)
     const tokenDestination = destinationAccounts[0];
-    console.log("tokenDestination: ", tokenDestination.toBase58());
-
-    const oldMetadata = await solConnection.getParsedAccountInfo( oldTokenMint);
-
-    const parsedInfo1 = oldMetadata.value.data as ParsedAccountData;
-    console.log("oldMetadata.value.data.parsed.info.decimal", parsedInfo1.parsed.info.decimals);
-
-    const newMetadata = await solConnection.getParsedAccountInfo( newTokenMint);
-
-    const parsedInfo2 = newMetadata.value.data as ParsedAccountData;
-    console.log("newMetadata.value.data.parsed.info.decimal", parsedInfo2.parsed.info.decimals);
 
     const tx = new Transaction();
     const txId = await program.methods
-    .tokenTransferMintTo(bump, new anchor.BN(amount), parsedInfo1.parsed.info.decimals, parsedInfo2.parsed.info.decimals )
+    .tokenTransferMintTo(bump,new anchor.BN(amount * 1e8)).accounts({globalAuthority, user: anchorWallet.publicKey,tokenDestination, oldTokenAccount: oldTokenAccount,oldTokenMint ,newTokenMint : newTokenMint,vault,  tokenProgram: new PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA")} )
     // .tokenTransferMintTo(bump, new anchor.BN(amount))
-    .accounts({
-        user,
-        globalAuthority,
-        oldToken: oldTokenAccount,
-        newToken: newTokenMint,
-        tokenTreasury,
-        tokenDestination,
-        tokenProgram: TOKEN_PROGRAM_ID
-    })
     .preInstructions(instructions)
     .transaction();
 
@@ -107,10 +121,122 @@ export const depositOldTx = async (
             }, "confirmed");
 
         return confirmed;
-    } catch (e) {
-        console.log(e);
+        } catch (e) {
+            console.log(e);
     }
+       
 }
+
+
+
+
+export const redeem = async (
+    anchorWallet: AnchorWallet,
+    oldTokenMint: PublicKey,
+    newTokenMint: PublicKey,
+    amount: number
+) => {
+    if (anchorWallet.publicKey === null || anchorWallet.signTransaction == null) {
+        return;
+    }
+    const options = anchor.AnchorProvider.defaultOptions();
+    const provider = new anchor.AnchorProvider(solConnection, anchorWallet, options);
+
+    console.log("provider", provider);
+    console.log("anchor wallet",anchorWallet.publicKey)
+
+    
+    anchor.setProvider(provider);
+
+    const programId = new PublicKey(PROGRAM_ID);
+
+    console.log("prgram Id", programId, oldTokenMint)
+    const program = new anchor.Program(GameIDL as anchor.Idl, programId, provider);
+    
+
+    const user = anchorWallet.publicKey;
+
+    const [globalAuthority, bump] = PublicKey.findProgramAddressSync(
+        [Buffer.from(GLOBAL_AUTHORITY_SEED)],
+        program.programId);
+    // console.log("globalPool: ", globalPool.toBase58());
+
+    
+  
+    const [vault, vault_bump] = PublicKey.findProgramAddressSync(
+        [Buffer.from(VAULT_SEED)],
+        program.programId
+    );
+
+
+    let oldTokenAccount = await getAssociatedTokenAccount(anchorWallet.publicKey,oldTokenMint);
+    console.log("oldTokenAccount: ", oldTokenAccount.toBase58());
+
+    console.log("admin wallet", anchorWallet.publicKey)
+
+
+    let tokenTreasury = await getAssociatedTokenAccount(new PublicKey(globalAuthority), oldTokenMint);
+    console.log("tokenTreasury: ", tokenTreasury.toBase58());
+
+    console.log("token treasury", tokenTreasury)
+
+    let newTokenAccount = await getAssociatedTokenAccount(anchorWallet.publicKey,newTokenMint);
+    console.log("newTokenAccount: ", newTokenAccount.toBase58());
+    
+    let { instructions, destinationAccounts } = await getATokenAccountsNeedCreate(
+        solConnection,
+        anchorWallet.publicKey,
+        anchorWallet.publicKey,
+        [oldTokenMint]
+    );
+
+    // console.log("length", instructions.length)
+    const tokenDestination = destinationAccounts[0];
+
+    const tx = new Transaction();
+    const txId = await program.methods
+    .redeem(bump,new anchor.BN(100000000)).accounts({globalAuthority, user: anchorWallet.publicKey, oldTokenMint ,newTokenMint , newTokenAccount, oldTokenAccount , vault,  tokenProgram: new PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA")} )
+    // .tokenTransferMintTo(bump, new anchor.BN(amount))
+    .preInstructions(instructions)
+    .transaction();
+
+    tx.add(txId);
+
+    tx.feePayer = user;
+    const blockhash = await solConnection.getLatestBlockhash();
+    tx.recentBlockhash = blockhash.blockhash;
+
+    let confirmed_cnt = 0;
+
+    try {
+
+        const signedTx = await anchorWallet.signTransaction(tx)
+
+        // Send the raw transaction
+        const options = {
+            commitment: "confirmed",
+            skipPreflight: false,
+        };
+
+        const sTx = signedTx.serialize();
+
+        // Confirm the transaction
+        const signature = await solConnection.sendRawTransaction(sTx, options);
+
+        const confirmed = await solConnection.confirmTransaction(
+            {
+                signature,
+                blockhash: blockhash.blockhash,
+                lastValidBlockHeight: blockhash.lastValidBlockHeight,
+            }, "confirmed");
+
+        return confirmed;
+        } catch (e) {
+            console.log(e);
+    }
+       
+}
+
 
 
 export const getGlobalState = async (program: anchor.Program): Promise<GlobalPool | null> => {
@@ -151,3 +277,35 @@ export const getGlobalInfo = async (
 
     };
 }
+
+function formatNumber(number: number) {
+    if (number < 1000) {
+      return number.toFixed(1);
+    } else if (number < 1e6) {
+      return (number / 1e3).toFixed(1) + "K";
+    } else if (number < 1e9) {
+      return (number / 1e6).toFixed(1) + "M";
+    } else if (number < 1e12) {
+      return (number / 1e9).toFixed(1) + "B";
+    } else {
+      return (number / 1e12).toFixed(1) + "T";
+    }
+  }
+
+export const getTokenBalance = async (
+    anchorWallet: AnchorWallet,
+    oldTokenMint: PublicKey,
+    newTokenMint: PublicKey,
+) => {
+    let oldTokenAccount = await getAssociatedTokenAccount(anchorWallet.publicKey,new PublicKey(oldTokenMint));
+    let newTokenAccount = await getAssociatedTokenAccount(anchorWallet.publicKey,new PublicKey(newTokenMint));
+
+    const oldTokenBalance = await solConnection.getTokenAccountBalance(oldTokenAccount).then((res) => Number(res.value.amount)/(1e8)).catch((err) => 0);
+    const newTokenBalance = await solConnection.getTokenAccountBalance(newTokenAccount).then((res) => Number(res.value.amount)/(1e8)).catch((err) => 0);;
+
+    return {
+        oldTokenBalance : formatNumber(oldTokenBalance) ,
+        newTokenBalance: formatNumber(newTokenBalance) ,
+    };
+}
+

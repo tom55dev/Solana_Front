@@ -4,7 +4,7 @@ import { useAnchorWallet, useWallet } from "@solana/wallet-adapter-react";
 import SimpleBar from "simplebar-react";
 import { BarLoader } from "react-spinners";
 import { errorAlert, successAlert } from "../components/ToastGroup";
-import { depositOldTx, getGlobalInfo } from "../lib/scripts";
+import { depositOldTx, getGlobalInfo, getTokenBalance, redeem } from "../lib/scripts";
 import { OLD_TOKEN, NEW_TOKEN } from "../lib/constant";
 
 import { GlobalPool } from "../lib/types";
@@ -26,8 +26,8 @@ const Home: NextPage = () => {
   const [redeemAmount, setRedeemAmount] = useState(0);
   const [oldToken, setOldToken] = useState(OLD_TOKEN);
   const [newToken, setNewToken] = useState(NEW_TOKEN);
-  const [oldTokenAmount, setOldTokenAmount] = useState(100);
-  const [newTokenAmount, setNewTokenAmount] = useState(200);
+  const [oldTokenAmount, setOldTokenAmount] = useState("0");
+  const [newTokenAmount, setNewTokenAmount] = useState("0");
 
   const sign = async () => {
     try {
@@ -47,10 +47,23 @@ const Home: NextPage = () => {
     }
   };
 
-  useEffect(() => {
+  const getBalance = async() => {    
+    if(anchorWallet)
+     {   let result =  await getTokenBalance(anchorWallet, oldToken, newToken);
+          setOldTokenAmount(result.oldTokenBalance);
+          setNewTokenAmount(result.newTokenBalance);
+      }
+  }
+
+  useEffect( () => {
     if (wallet.connected !== null) {
       sign();
     }
+
+    if(anchorWallet)
+     { 
+      getBalance(); 
+     }
     // sign();
   }, [wallet.publicKey, wallet.connected]);
 
@@ -60,33 +73,49 @@ const Home: NextPage = () => {
     }
     const message = `To avoid digital dognappers, sign below to authenticate with Elementals`;
     const encodedMessage = new TextEncoder().encode(message);
-    if (wallet.signMessage) {
-      const signedMessage = await wallet
-        .signMessage(encodedMessage)
-        .then(async () => {
-          if (amount !== 0 && amount !== undefined) {
-            setLoading(true);
-            const conf = await depositOldTx(
-              anchorWallet,
-              oldToken,
-              newToken,
-              amount
-            );
-            if (conf) {
-              successAlert("Tx successfully.");
-            } else {
-              errorAlert("Operation failed.");
-            }
-            setLoading(false);
-          }
-        })
-        .catch((err) => {
-          errorAlert("You should sign message to verify your wallet.");
-        });
+    if (amount !== 0 && amount !== undefined) {
+      setLoading(true);
+      const conf = await depositOldTx(
+        anchorWallet,
+        oldToken,
+        newToken,
+        amount
+      );
+      if (conf) {
+        successAlert("Tx successfully.");
+      } else {
+        errorAlert("Operation failed.");
+      }
+      setLoading(false);
+
+      await getBalance();
     }
   };
 
-  const handleRedeem = async () => {};
+  const handleRedeem = async () => {
+    if (wallet.publicKey === null || !anchorWallet) {
+      return;
+    }
+    const message = `To avoid digital dognappers, sign below to authenticate with Elementals`;
+    const encodedMessage = new TextEncoder().encode(message);
+    if (amount !== 0 && amount !== undefined) {
+      setLoading(true);
+      const conf = await redeem(
+        anchorWallet,
+        oldToken,
+        newToken,
+        amount
+      );
+      if (conf) {
+        successAlert("Tx successfully.");
+      } else {
+        errorAlert("Operation failed.");
+      }
+      setLoading(false);
+
+      await getBalance();
+    }
+  };
 
   return (
     <SimpleBar forceVisible="x" autoHide={true} className="w-full h-screen">
@@ -112,7 +141,7 @@ const Home: NextPage = () => {
                     value={amount}
                     onChange={(e) => {
                       setAmount(
-                        Math.min(Number(e.target.value), oldTokenAmount)
+                        Number(e.target.value)
                       );
                     }}
                   />
@@ -130,7 +159,7 @@ const Home: NextPage = () => {
                     value={redeemAmount}
                     onChange={(e) => {
                       setRedeemAmount(
-                        Math.min(Number(e.target.value), newTokenAmount)
+                        Number(e.target.value)
                       );
                     }}
                   />

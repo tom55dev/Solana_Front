@@ -1,4 +1,4 @@
-export type AbToken = {
+export const IDL ={
   "version": "0.1.0",
   "name": "ab_token",
   "instructions": [
@@ -6,12 +6,22 @@ export type AbToken = {
       "name": "initialize",
       "accounts": [
         {
+          "name": "globalAuthority",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
           "name": "admin",
           "isMut": true,
           "isSigner": true
         },
         {
-          "name": "globalAuthority",
+          "name": "oldTokenMint",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "vault",
           "isMut": true,
           "isSigner": false
         },
@@ -24,25 +34,39 @@ export type AbToken = {
           "name": "rent",
           "isMut": false,
           "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
         }
       ],
-      "args": []
+      "args": [
+        {
+          "name": "globalBump",
+          "type": "u8"
+        }
+      ]
     },
     {
       "name": "updateOldToken",
       "accounts": [
         {
-          "name": "admin",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
           "name": "globalAuthority",
           "isMut": true,
           "isSigner": false
+        },
+        {
+          "name": "admin",
+          "isMut": true,
+          "isSigner": true
         }
       ],
       "args": [
+        {
+          "name": "globalBump",
+          "type": "u8"
+        },
         {
           "name": "oldToken",
           "type": {
@@ -55,17 +79,21 @@ export type AbToken = {
       "name": "updateNewToken",
       "accounts": [
         {
-          "name": "admin",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
           "name": "globalAuthority",
           "isMut": true,
           "isSigner": false
+        },
+        {
+          "name": "admin",
+          "isMut": true,
+          "isSigner": true
         }
       ],
       "args": [
+        {
+          "name": "globalBump",
+          "type": "u8"
+        },
         {
           "name": "newToken",
           "type": {
@@ -78,32 +106,34 @@ export type AbToken = {
       "name": "tokenTransferMintTo",
       "accounts": [
         {
-          "name": "user",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
           "name": "globalAuthority",
           "isMut": true,
           "isSigner": false
         },
         {
-          "name": "oldToken",
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "oldTokenAccount",
           "isMut": true,
           "isSigner": false
         },
         {
-          "name": "newToken",
+          "name": "oldTokenMint",
           "isMut": true,
           "isSigner": false
         },
         {
-          "name": "tokenTreasury",
+          "name": "newTokenMint",
           "isMut": true,
-          "isSigner": false,
-          "docs": [
-            "CHECK instruction will fail if wrong edition is supplied"
-          ]
+          "isSigner": false
+        },
+        {
+          "name": "vault",
+          "isMut": true,
+          "isSigner": false
         },
         {
           "name": "tokenDestination",
@@ -124,21 +154,68 @@ export type AbToken = {
         {
           "name": "amount",
           "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "redeem",
+      "accounts": [
+        {
+          "name": "globalAuthority",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          "name": "oldDecimal",
+          "name": "oldTokenMint",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "vault",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "newTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "oldTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "newTokenMint",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "globalBump",
           "type": "u8"
         },
         {
-          "name": "newDecimal",
-          "type": "u8"
+          "name": "amount",
+          "type": "u64"
         }
       ]
     }
   ],
   "accounts": [
     {
-      "name": "globalInfo",
+      "name": "GlobalInfo",
       "type": {
         "kind": "struct",
         "fields": [
@@ -169,179 +246,8 @@ export type AbToken = {
       "name": "InvalidSuperOwner",
       "msg": "Invalid Super Owner"
     }
-  ]
-};
-
-export const IDL: AbToken = {
-  "version": "0.1.0",
-  "name": "ab_token",
-  "instructions": [
-    {
-      "name": "initialize",
-      "accounts": [
-        {
-          "name": "admin",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "globalAuthority",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "rent",
-          "isMut": false,
-          "isSigner": false
-        }
-      ],
-      "args": []
-    },
-    {
-      "name": "updateOldToken",
-      "accounts": [
-        {
-          "name": "admin",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "globalAuthority",
-          "isMut": true,
-          "isSigner": false
-        }
-      ],
-      "args": [
-        {
-          "name": "oldToken",
-          "type": {
-            "option": "publicKey"
-          }
-        }
-      ]
-    },
-    {
-      "name": "updateNewToken",
-      "accounts": [
-        {
-          "name": "admin",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "globalAuthority",
-          "isMut": true,
-          "isSigner": false
-        }
-      ],
-      "args": [
-        {
-          "name": "newToken",
-          "type": {
-            "option": "publicKey"
-          }
-        }
-      ]
-    },
-    {
-      "name": "tokenTransferMintTo",
-      "accounts": [
-        {
-          "name": "user",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "globalAuthority",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "oldToken",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "newToken",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "tokenTreasury",
-          "isMut": true,
-          "isSigner": false,
-          "docs": [
-            "CHECK instruction will fail if wrong edition is supplied"
-          ]
-        },
-        {
-          "name": "tokenDestination",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "tokenProgram",
-          "isMut": false,
-          "isSigner": false
-        }
-      ],
-      "args": [
-        {
-          "name": "globalBump",
-          "type": "u8"
-        },
-        {
-          "name": "amount",
-          "type": "u64"
-        },
-        {
-          "name": "oldDecimal",
-          "type": "u8"
-        },
-        {
-          "name": "newDecimal",
-          "type": "u8"
-        }
-      ]
-    }
   ],
-  "accounts": [
-    {
-      "name": "globalInfo",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "admin",
-            "type": "publicKey"
-          },
-          {
-            "name": "oldToken",
-            "type": "publicKey"
-          },
-          {
-            "name": "newToken",
-            "type": "publicKey"
-          }
-        ]
-      }
-    }
-  ],
-  "errors": [
-    {
-      "code": 6000,
-      "name": "InvalidAutority",
-      "msg": "You should transfer mint authority of new token to program"
-    },
-    {
-      "code": 6001,
-      "name": "InvalidSuperOwner",
-      "msg": "Invalid Super Owner"
-    }
-  ]
-};
+  "metadata": {
+    "address": "7vfAZgrKyYV2e3XTKuwisXfVcdSY7vMZ7N5m6ppNMboP"
+  }
+}
