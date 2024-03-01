@@ -9,11 +9,11 @@ export const GLOBAL_AUTHORITY_SEED = "global-authority";
 export const VAULT_SEED = "vault";
 
 
-export const PROGRAM_ID = new PublicKey("7vfAZgrKyYV2e3XTKuwisXfVcdSY7vMZ7N5m6ppNMboP");
+export const PROGRAM_ID = new PublicKey("HC1N8TUkT4AcGKTbfHBwu1E6VdXifHLAb6mCCxpHUKt3");
 
 
 export const OLD_TOKEN = new PublicKey("Fm22RbypFLJeR3tjUKK2EGERj78PZVoNwE5wiDYqPHvN");
-export const NEW_TOKEN = new PublicKey("FxiQg645pMgnyebiVS9D2h2eo5vnQPA7Au43JNm8kToU");
+export const NEW_TOKEN = new PublicKey("5gAfJFu2nDUjceQJ4uKnkNEN94xEiF6JW3XyaEdyFd9p");
 
 // export const solConnection = new anchor.web3.Connection(
 //   "https://solana-mainnet.g.alchemy.com/v2/rOf-NrWf8l6Rk5aOJJ8CdqKbpLGxChQk"
