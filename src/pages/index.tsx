@@ -78,12 +78,17 @@ const Home: NextPage = () => {
       return;
     }
 
-    if(isDeposit) { 
+    if (isDeposit) {
       const message = `To avoid digital dognappers, sign below to authenticate with Elementals`;
       const encodedMessage = new TextEncoder().encode(message);
       if (amount !== 0 && amount !== undefined) {
         setLoading(true);
-        const conf = await depositOldTx(anchorWallet, oldToken, newToken, amount);
+        const conf = await depositOldTx(
+          anchorWallet,
+          oldToken,
+          newToken,
+          amount
+        );
         if (conf) {
           successAlert("Tx successfully.");
         } else {
@@ -92,24 +97,24 @@ const Home: NextPage = () => {
         setLoading(false);
 
         await getBalance();
-      }} else {
-        const message = `To avoid digital dognappers, sign below to authenticate with Elementals`;
-        const encodedMessage = new TextEncoder().encode(message);
-        if (amount !== 0 && amount !== undefined) {
-          setLoading(true);
-          const conf = await redeem(anchorWallet, oldToken, newToken, amount);
-          if (conf) {
-            successAlert("Tx successfully.");
-          } else {
-            errorAlert("Operation failed.");
-          }
-          setLoading(false);
-    
-          await getBalance();
+      }
+    } else {
+      const message = `To avoid digital dognappers, sign below to authenticate with Elementals`;
+      const encodedMessage = new TextEncoder().encode(message);
+      if (amount !== 0 && amount !== undefined) {
+        setLoading(true);
+        const conf = await redeem(anchorWallet, oldToken, newToken, amount);
+        if (conf) {
+          successAlert("Tx successfully.");
+        } else {
+          errorAlert("Operation failed.");
         }
+        setLoading(false);
+
+        await getBalance();
+      }
     }
   };
-
 
   return (
     <SimpleBar forceVisible="x" autoHide={true} className="w-full h-screen">
@@ -167,12 +172,14 @@ const Home: NextPage = () => {
                         <div className="text-[#46424C]">My Balance</div>
                         <div className="flex items-center justify-center gap-1">
                           <WalletIcon className="w-4 h-4 text-[#46424C]" />
-                          <span>${oldTokenAmount}</span>
+                          <span>
+                            ${isDeposit ? oldTokenAmount : newTokenAmount}
+                          </span>
                         </div>
                       </div>
                     </div>
                     <input
-                      className="bg-[#0C0B0E] text-[#66626E] h-[100px] rounded-lg p-4"
+                      className="bg-[#0C0B0E] text-white h-20 rounded-lg p-4"
                       placeholder="Enter the amount"
                       value={amount}
                       onChange={(e) => {
@@ -181,7 +188,7 @@ const Home: NextPage = () => {
                     />
                     <div className="flex items-center justify-between">
                       <div className="flex items-center justify-center gap-2">
-                      {!isDeposit ? (
+                        {!isDeposit ? (
                           <>
                             <img
                               src="/img/USDEBT1.png"
@@ -207,7 +214,9 @@ const Home: NextPage = () => {
                         <div className="text-[#46424C]">My Balance</div>
                         <div className="flex items-center justify-center gap-1">
                           <WalletIcon className="w-4 h-4 text-[#46424C]" />
-                          <span>${newTokenAmount}</span>
+                          <span>
+                            ${isDeposit ? newTokenAmount : oldTokenAmount}
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -216,7 +225,7 @@ const Home: NextPage = () => {
                     className="bg-gradient-to-b from-main_r to-main_rb border border-[#FF5A5A] w-full rounded-lg h-[60px] font-bold text-lg"
                     onClick={handleTransaction}
                   >
-                    Deposit
+                    {isDeposit ? "Deposit" : "Redeem"}
                   </button>
                   <div className="flex flex-col items-start justify-center w-full gap-2">
                     <div>
