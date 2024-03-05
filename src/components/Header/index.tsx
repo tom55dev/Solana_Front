@@ -19,25 +19,21 @@ export default function Header() {
   };
 
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
     setIsTop(true);
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
   return (
-    <div className={`w-full flex justify-between items-center px-[25px] sm:px-[39px] py-[15px] z-50 fixed header-style`}>
-      {/* <a href="/" className="flex flex-row w-full cursor-pointer gap-2 items-center">
-        <img src="/img/logo.png" alt="Logo" className="w-[80px] h-[80px]" />
-        <span className="sm:flex hidden uppercase text-text_y text-[34px] font-bold text-[#661d02]">Elementals</span>
-      </a> */}
-      <div className="w-[220px] flex items-center sm:pr-[35px]">
-        <div className="mx-auto border border-white rounded-full bg-text_y">
-          <WalletModalProvider>
-            <WalletMultiButton className="text-white" />
-          </WalletModalProvider>
-        </div>
+    <div
+      className={`w-full flex justify-end items-center px-12 py-8 z-50 fixed header-style`}
+    >
+      <div className="rounded-lg h-12 w-[200px] flex justify-center items-center bg-main_r">
+        <WalletModalProvider>
+          <WalletMultiButton className="text-white" />
+        </WalletModalProvider>
       </div>
     </div>
   );
