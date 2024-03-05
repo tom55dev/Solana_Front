@@ -250,7 +250,7 @@ const Home: NextPage = () => {
                     <div className="flex flex-col w-full gap-2 bg-[#19171E] rounded-lg p-4">
                       <div className="flex items-center justify-between">
                         <span>
-                          <b>Total USDEBT</b>(Wormhole):
+                          <b>Total USDEBT</b>&nbsp;(Wormhole):
                         </span>
                         <b>{oldTokenSupply}</b>
                       </div>
