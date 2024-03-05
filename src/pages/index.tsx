@@ -73,45 +73,43 @@ const Home: NextPage = () => {
     // sign();
   }, [wallet.publicKey, wallet.connected]);
 
-  const depositBtn = async () => {
+  const handleTransaction = async () => {
     if (wallet.publicKey === null || !anchorWallet) {
       return;
     }
-    const message = `To avoid digital dognappers, sign below to authenticate with Elementals`;
-    const encodedMessage = new TextEncoder().encode(message);
-    if (amount !== 0 && amount !== undefined) {
-      setLoading(true);
-      const conf = await depositOldTx(anchorWallet, oldToken, newToken, amount);
-      if (conf) {
-        successAlert("Tx successfully.");
-      } else {
-        errorAlert("Operation failed.");
-      }
-      setLoading(false);
 
-      await getBalance();
+    if(isDeposit) { 
+      const message = `To avoid digital dognappers, sign below to authenticate with Elementals`;
+      const encodedMessage = new TextEncoder().encode(message);
+      if (amount !== 0 && amount !== undefined) {
+        setLoading(true);
+        const conf = await depositOldTx(anchorWallet, oldToken, newToken, amount);
+        if (conf) {
+          successAlert("Tx successfully.");
+        } else {
+          errorAlert("Operation failed.");
+        }
+        setLoading(false);
+
+        await getBalance();
+      }} else {
+        const message = `To avoid digital dognappers, sign below to authenticate with Elementals`;
+        const encodedMessage = new TextEncoder().encode(message);
+        if (amount !== 0 && amount !== undefined) {
+          setLoading(true);
+          const conf = await redeem(anchorWallet, oldToken, newToken, amount);
+          if (conf) {
+            successAlert("Tx successfully.");
+          } else {
+            errorAlert("Operation failed.");
+          }
+          setLoading(false);
+    
+          await getBalance();
+        }
     }
   };
 
-  const handleRedeem = async () => {
-    if (wallet.publicKey === null || !anchorWallet) {
-      return;
-    }
-    const message = `To avoid digital dognappers, sign below to authenticate with Elementals`;
-    const encodedMessage = new TextEncoder().encode(message);
-    if (amount !== 0 && amount !== undefined) {
-      setLoading(true);
-      const conf = await redeem(anchorWallet, oldToken, newToken, amount);
-      if (conf) {
-        successAlert("Tx successfully.");
-      } else {
-        errorAlert("Operation failed.");
-      }
-      setLoading(false);
-
-      await getBalance();
-    }
-  };
 
   return (
     <SimpleBar forceVisible="x" autoHide={true} className="w-full h-screen">
@@ -169,7 +167,7 @@ const Home: NextPage = () => {
                         <div className="text-[#46424C]">My Balance</div>
                         <div className="flex items-center justify-center gap-1">
                           <WalletIcon className="w-4 h-4 text-[#46424C]" />
-                          <span>0</span>
+                          <span>${oldTokenAmount}</span>
                         </div>
                       </div>
                     </div>
@@ -209,14 +207,14 @@ const Home: NextPage = () => {
                         <div className="text-[#46424C]">My Balance</div>
                         <div className="flex items-center justify-center gap-1">
                           <WalletIcon className="w-4 h-4 text-[#46424C]" />
-                          <span>0</span>
+                          <span>${newTokenAmount}</span>
                         </div>
                       </div>
                     </div>
                   </div>
                   <button
                     className="bg-gradient-to-b from-main_r to-main_rb border border-[#FF5A5A] w-full rounded-lg h-[60px] font-bold text-lg"
-                    onClick={depositBtn}
+                    onClick={handleTransaction}
                   >
                     Deposit
                   </button>
