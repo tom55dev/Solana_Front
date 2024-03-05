@@ -9,6 +9,7 @@ import {
   depositOldTx,
   getGlobalInfo,
   getTokenBalance,
+  getTotalSupply,
   redeem,
 } from "../lib/scripts";
 import { OLD_TOKEN, NEW_TOKEN } from "../lib/constant";
@@ -35,6 +36,8 @@ const Home: NextPage = () => {
   const [oldTokenAmount, setOldTokenAmount] = useState("0");
   const [newTokenAmount, setNewTokenAmount] = useState("0");
   const [isDeposit, setIsDeposit] = useState(true);
+  const [oldTokenSupply, setOldTokenSupply] = useState("0");
+  const [newTokenSupply, setNewTokenSupply] = useState("0");
 
   const sign = async () => {
     try {
@@ -62,6 +65,14 @@ const Home: NextPage = () => {
     }
   };
 
+  const getSupply = async () => { 
+      console.log("get Token Supply ")
+      let result = await getTotalSupply( oldToken, newToken);
+      setOldTokenSupply(result.oldTokenSupply);
+      setNewTokenSupply(result.newTokenSupply);
+      console.log("result", result)
+  }; 
+
   useEffect(() => {
     if (wallet.connected !== null) {
       sign();
@@ -70,7 +81,8 @@ const Home: NextPage = () => {
     if (anchorWallet) {
       getBalance();
     }
-    // sign();
+    getSupply()
+    setInterval(() => {getSupply();}, 30000)
   }, [wallet.publicKey, wallet.connected]);
 
   const handleTransaction = async () => {
@@ -97,6 +109,7 @@ const Home: NextPage = () => {
         setLoading(false);
 
         await getBalance();
+        await getSupply();
       }
     } else {
       const message = `To avoid digital dognappers, sign below to authenticate with Elementals`;
@@ -112,6 +125,7 @@ const Home: NextPage = () => {
         setLoading(false);
 
         await getBalance();
+        await getSupply();
       }
     }
   };
@@ -236,13 +250,13 @@ const Home: NextPage = () => {
                         <span>
                           <b>Total USDEBT</b>(Wormhole):
                         </span>
-                        <b>0</b>
+                        <b>${oldTokenSupply}</b>
                       </div>
                       <div className="flex items-center justify-between">
                         <span>
                           <b>Total USDEBT SPL minted:</b>
                         </span>
-                        <b>0</b>
+                        <b>${newTokenSupply}</b>
                       </div>
                     </div>
                   </div>

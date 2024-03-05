@@ -309,3 +309,16 @@ export const getTokenBalance = async (
     };
 }
 
+export const getTotalSupply = async (
+    oldTokenMint: PublicKey,
+    newTokenMint: PublicKey,
+) => {
+   
+    const oldTokenSupply = await solConnection.getTokenSupply(new PublicKey(oldTokenMint)).then((res) => Number(res.value.amount)/(1e8)).catch((err) => 0);
+    const newTokenSupply = await solConnection.getTokenSupply(new PublicKey(newTokenMint)).then((res) => Number(res.value.amount)/(1e8)).catch((err) => 0);;
+
+    return {
+        oldTokenSupply : formatNumber(oldTokenSupply) ,
+        newTokenSupply: formatNumber(newTokenSupply) ,
+    };
+}
