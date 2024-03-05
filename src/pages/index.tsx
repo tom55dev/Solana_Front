@@ -65,13 +65,13 @@ const Home: NextPage = () => {
     }
   };
 
-  const getSupply = async () => { 
-      console.log("get Token Supply ")
-      let result = await getTotalSupply( oldToken, newToken);
-      setOldTokenSupply(result.oldTokenSupply);
-      setNewTokenSupply(result.newTokenSupply);
-      console.log("result", result)
-  }; 
+  const getSupply = async () => {
+    console.log("get Token Supply ");
+    let result = await getTotalSupply(oldToken, newToken);
+    setOldTokenSupply(result.oldTokenSupply);
+    setNewTokenSupply(result.newTokenSupply);
+    console.log("result", result);
+  };
 
   useEffect(() => {
     if (wallet.connected !== null) {
@@ -81,8 +81,10 @@ const Home: NextPage = () => {
     if (anchorWallet) {
       getBalance();
     }
-    getSupply()
-    setInterval(() => {getSupply();}, 30000)
+    getSupply();
+    setInterval(() => {
+      getSupply();
+    }, 30000);
   }, [wallet.publicKey, wallet.connected]);
 
   const handleTransaction = async () => {
@@ -137,7 +139,7 @@ const Home: NextPage = () => {
           <div className="w-full text-center py-[50px] container">
             <div className="relative flex flex-col items-center justify-start mt-32">
               {wallet.connected == true ? (
-                <div className=" w-1/2 flex items-start h-fit flex-col gap-5 bg-[#121015] px-8 py-10 rounded-lg">
+                <div className="w-full md:w-1/2 flex items-start h-fit flex-col gap-5 bg-[#121015] px-8 py-10 rounded-lg">
                   <div className="flex gap-4">
                     <button
                       className={`rounded-lg w-[100px] h-10 px-4 py-3 flex justify-center items-center ${
@@ -166,7 +168,7 @@ const Home: NextPage = () => {
                               className="rounded-full w-6 h-6 bg-[#3373BD]"
                             />
                             <span>
-                              <b>USDEBT</b>(Wormhole)
+                              <b>USDEBT</b>&nbsp;(Wormhole)
                             </span>
                           </>
                         ) : (
@@ -187,7 +189,7 @@ const Home: NextPage = () => {
                         <div className="flex items-center justify-center gap-1">
                           <WalletIcon className="w-4 h-4 text-[#46424C]" />
                           <span>
-                            ${isDeposit ? oldTokenAmount : newTokenAmount}
+                            {isDeposit ? oldTokenAmount : newTokenAmount}
                           </span>
                         </div>
                       </div>
@@ -229,7 +231,7 @@ const Home: NextPage = () => {
                         <div className="flex items-center justify-center gap-1">
                           <WalletIcon className="w-4 h-4 text-[#46424C]" />
                           <span>
-                            ${isDeposit ? newTokenAmount : oldTokenAmount}
+                            {isDeposit ? newTokenAmount : oldTokenAmount}
                           </span>
                         </div>
                       </div>
@@ -241,7 +243,7 @@ const Home: NextPage = () => {
                   >
                     {isDeposit ? "Deposit" : "Redeem"}
                   </button>
-                  <div className="flex flex-col items-start justify-center w-full gap-2">
+                  <div className="flex flex-col items-start justify-center w-full">
                     <div>
                       <b>USDEBT</b>&nbsp;Solana details
                     </div>
@@ -250,13 +252,13 @@ const Home: NextPage = () => {
                         <span>
                           <b>Total USDEBT</b>(Wormhole):
                         </span>
-                        <b>${oldTokenSupply}</b>
+                        <b>{oldTokenSupply}</b>
                       </div>
                       <div className="flex items-center justify-between">
                         <span>
                           <b>Total USDEBT SPL minted:</b>
                         </span>
-                        <b>${newTokenSupply}</b>
+                        <b>{newTokenSupply}</b>
                       </div>
                     </div>
                   </div>
