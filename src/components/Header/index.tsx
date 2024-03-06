@@ -29,7 +29,7 @@ export default function Header() {
   }, []);
   return (
     <div
-      className={`w-full flex justify-start items-center px-12 py-8 z-50 header-style gap-4`}
+      className={`w-full flex justify-start items-center px-12 py-8 z-50 header-style gap-4 text-white`}
     >
       <Link href={"/"}>Home</Link>
       <a href={"/bridge"}>Bridge</a>
