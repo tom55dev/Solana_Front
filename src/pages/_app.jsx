@@ -4,7 +4,7 @@ import Wallet from "../components/wallet/Wallet";
 import Header from "../components/Header";
 import { ToastContainer } from "react-toastify";
 // import PageLoading from "../components/PageLoading";
-import 'simplebar-react/dist/simplebar.min.css';
+import "simplebar-react/dist/simplebar.min.css";
 import "../styles/globals.css";
 
 function SimpleJackpot({ Component, pageProps }) {
