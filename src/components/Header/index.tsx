@@ -4,6 +4,7 @@ import {
   WalletModalProvider,
   WalletMultiButton,
 } from "@solana/wallet-adapter-react-ui";
+import Link from "next/link";
 
 export default function Header() {
   const [isTop, setIsTop] = useState(false);
@@ -28,13 +29,10 @@ export default function Header() {
   }, []);
   return (
     <div
-      className={`w-full flex justify-end items-center px-12 py-8 z-50 fixed header-style`}
+      className={`w-full flex justify-start items-center px-12 py-8 z-50 header-style gap-4`}
     >
-      <div className="rounded-lg h-12 w-[200px] flex justify-center items-center bg-main_r">
-        <WalletModalProvider>
-          <WalletMultiButton className="text-white" />
-        </WalletModalProvider>
-      </div>
+      <Link href={"/"}>Home</Link>
+      <a href={"/bridge"}>Bridge</a>
     </div>
   );
 }

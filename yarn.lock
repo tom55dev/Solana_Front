@@ -2315,10 +2315,10 @@
   dependencies:
     "@walletconnect/window-getters" "^1.0.0"
 
-"@wormhole-foundation/wormhole-connect@^0.0.9":
-  version "0.0.9"
-  resolved "https://registry.yarnpkg.com/@wormhole-foundation/wormhole-connect/-/wormhole-connect-0.0.9.tgz#69b8771ed74ecaad6ce9c7a8a0b0827eeec92dfc"
-  integrity sha512-0XYrRR+uEvztvT4m4FC2P5kD4wAnnrDWYKITClS9SI51Ssd5Qt/ylCF+pguqImRYEM/CnR0BVzgZhyW1bJlnLQ==
+"@wormhole-foundation/wormhole-connect@^0.2.6":
+  version "0.2.6"
+  resolved "https://registry.yarnpkg.com/@wormhole-foundation/wormhole-connect/-/wormhole-connect-0.2.6.tgz#e99099f4a8e5c40ecf9899552d7a79ef79da95dd"
+  integrity sha512-tvvABrEawPV4f0aSkwwQeWFXUqxMlUo/Vcxmpv45QSUUqoGACzhEryfxPnBGCirfRbOuzhq47mMIFG6i9uVV/w==
   dependencies:
     "@mui/material" "^5.12.1"
 
