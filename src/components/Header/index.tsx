@@ -5,6 +5,7 @@ import {
   WalletMultiButton,
 } from "@solana/wallet-adapter-react-ui";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Header() {
   const [isTop, setIsTop] = useState(false);
@@ -31,7 +32,15 @@ export default function Header() {
     <div
       className={`w-full flex justify-between items-center px-12 py-8 z-50 header-style gap-4 text-white fixed`}
     >
-      <div className="flex gap-4 text-white pl-4">
+      <div className="flex gap-4 text-white pl-4 justify-center items-center">
+        <Link href={"/"}>
+          <Image
+            src={"/logo.png"}
+            width={40}
+            height={40}
+            className="rounded-full cursor-pointer"
+          />
+        </Link>
         <Link href="/">Home</Link>
         <a
           href="https://portalbridge.com/advanced-tools/#/transfer"
