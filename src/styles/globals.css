@@ -135,7 +135,7 @@ body {
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: #0c0b0e;
+  background: white;
 }
 
 a {
