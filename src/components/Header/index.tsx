@@ -30,14 +30,15 @@ export default function Header() {
   }, []);
   return (
     <div
-      className={`w-full flex justify-between items-center px-12 py-8 z-50 header-style gap-4 text-white fixed`}
+      className={`w-full flex justify-between items-center px-2 md:px-12 py-8 z-50 header-style gap-4 text-white fixed`}
     >
-      <div className="flex gap-4 text-white pl-4 justify-center items-center">
+      <div className="flex gap-4 text-white pl-0 md:pl-4 justify-center items-center">
         <Link href={"/"}>
           <Image
             src={"/logo.png"}
-            width={40}
-            height={40}
+            width={60}
+            height={60}
+            alt="logo"
             className="rounded-full cursor-pointer"
           />
         </Link>
