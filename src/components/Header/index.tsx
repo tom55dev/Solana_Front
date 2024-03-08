@@ -30,7 +30,7 @@ export default function Header() {
   }, []);
   return (
     <div
-      className={`w-full flex justify-between items-center px-2 md:px-12 py-8 z-50 header-style gap-4 text-white fixed bg-black/10 backdrop-blur-sm`}
+      className={`w-full flex justify-between items-center px-2 md:px-12 py-4 z-50 header-style gap-4 text-white fixed bg-black/10 backdrop-blur-sm`}
     >
       <Link href={"/"}>
         <Image

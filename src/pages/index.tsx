@@ -140,12 +140,14 @@ const Home: NextPage = () => {
       <main className="z-40 w-full bg-[#0C0B0E] text-white pb-0 md:pb-0">
         <div className="mx-auto">
           <div className="w-full text-center py-[50px] container">
-            <div className="relative flex flex-col items-center justify-start gap-1 mt-16">
-              <div
-                className={`w-full text-xl md:w-1/2 ${
-                  wallet.connected ? "" : "hidden"
-                }`}
-              >
+            <div className="relative flex flex-col items-center justify-start gap-1 mt-8">
+              <h1 className="text-3xl font-black">USDEBT Solana Mint</h1>
+              <div>
+                USDEBT Solana Mint allows the creation of authentic
+                <br />
+                USDEBT Solana meme coins from your Ethereum USDEBT meme coins.
+              </div>
+              <div className={`${wallet.connected ? "" : "hidden"}`}>
                 If your USDEBT (Wormhole) balance is zero, bridge USDEBT from
                 <br />
                 Ethereum to Solana through Portal Bridge{" "}
