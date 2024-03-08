@@ -137,30 +137,34 @@ const Home: NextPage = () => {
   return (
     <>
       {/* <SimpleBar forceVisible="x" autoHide={true} className="w-full"> */}
-      <main className="z-40 w-full bg-[#0C0B0E] text-white pb-0 md:pb-0">
+      <main className="z-40 w-full bg-[#0C0B0E] text-white">
         <div className="mx-auto">
           <div className="w-full text-center py-[50px] container">
-            <div className="relative flex flex-col items-center justify-start gap-1 mt-8">
-              <h1 className="text-3xl font-black">USDEBT Solana Mint</h1>
+            <div className="relative flex flex-col items-center justify-start gap-4 mt-8">
+              <h1 className="text-[48px] font-black">USDEBT Solana Mint</h1>
               <div>
-                USDEBT Solana Mint allows the creation of authentic
-                <br />
-                USDEBT Solana meme coins from your Ethereum USDEBT meme coins.
+                <b>
+                  This smart contract allows the creation of authentic
+                  <br />
+                  USDEBT Solana meme coins from your USDEBT Ethereum meme coins.
+                </b>
               </div>
               <div className={`${wallet.connected ? "" : "hidden"}`}>
-                If your USDEBT (Wormhole) balance is zero, bridge USDEBT from
-                <br />
-                Ethereum to Solana through Portal Bridge{" "}
-                <a
-                  href="https://portalbridge.com/advanced-tools/#/transfer"
-                  target="_blank"
-                >
-                  <u>click here</u>
-                </a>
-                .
+                <b>
+                  If your USDEBT (Wormhole) balance is zero, bridge USDEBT from
+                  <br />
+                  Ethereum to Solana through Portal Bridge,{" "}
+                  <a
+                    href="https://portalbridge.com/advanced-tools/#/transfer"
+                    target="_blank"
+                  >
+                    <u>click here</u>
+                  </a>
+                  .
+                </b>
               </div>
               <div className="w-full md:w-1/2 flex items-start h-fit flex-col gap-5 bg-[#121015] px-8 py-10 rounded-lg">
-                <div className="flex items-center justify-between w-full">
+                <div className="flex items-center justify-between w-full gap-4">
                   <div className="flex gap-4">
                     <button
                       className={`rounded-lg w-[100px] h-10 px-4 py-3 flex justify-center items-center ${
@@ -183,7 +187,7 @@ const Home: NextPage = () => {
                     How to Use
                   </div>
                 </div>
-                <div className="flex flex-col w-full gap-4">
+                <div className="flex flex-col w-full gap-2 md:gap-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center justify-center gap-2">
                       {isDeposit ? (
@@ -300,30 +304,41 @@ const Home: NextPage = () => {
         )}
       </main>
       {/* </SimpleBar> */}
-      <CustomModal open={open} setOpen={setOpen}>
-        <h1 className="font-bold text-center">How to Use</h1>
-        <div className="flex flex-col gap-2">
-          <h2>1. Bridging from Ethereum to Solana</h2>
-          <div>
-            Bridge USDEBT from Ethereum to Solana through PortalBridge.com. In
-            this step, your USDEBT ERC-20 coins lock into the portal bridge
-            smart contract, and a new Portal wrapped USDEBT token gets minted on
-            Solana. This newly wrapped Portal token is referred to as USDEBT
-            (Wormhole). You will notice the USDEBT Wormhole token logo as : Go
-            to{" "}
-            <a href="https://portalbridge.com/">
-              <u>https://portalbridge.com/</u>
-            </a>
+      <CustomModal open={open} setOpen={setOpen} className="gap-4">
+        <h1 className="font-bold text-center">How to Use USDEBT Solana Mint</h1>
+        <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-1">
+            <b>Bridging from Ethereum to Solana</b>
+            <span>
+              First, Bridge USDEBT from Ethereum to Solana through
+              portalbridge.com. In this step, your USDEBT ERC-20 coins lock into
+              the Portal Bridge smart contract, and a new Portal wrapped USDEBT
+              token gets minted on Solana. This newly wrapped Portal token is
+              referred to as USDEBT (Wormhole). You will notice the USDEBT
+              Wormhole token logo as:{" "}
+              <img
+                src="/img/USDEBT1.png"
+                className="rounded-full w-6 h-6 bg-[#3373BD] inline-block"
+              />{" "}
+              Go to{" "}
+              <a href="https://portalbridge.com/">
+                <u>https://portalbridge.com/</u>
+              </a>
+            </span>
           </div>
-          <h2>2. Mint authentic USDEBT Solana (SPL) coins</h2>
+          <div className="flex flex-col gap-1">
+            <b>Mint authentic USDEBT Solana (SPL) coins</b>
+            <div>
+              In this step, your USDEBT (Wormhole) tokens locks into the USDEBT
+              Solana Mint contract, and new authentic USDEBT Solana (SPL) coins
+              are minted. These coins represent the authentic USDEBT coins that
+              are transacted throughout the Solana ecosystem. You will notice
+              the same USDEBT logo as Ethereum, but the contract address on the
+              Solana network is{" "}
+              <i>5gAfJFu2nDUjceQJ4uKnkNEN94xEiF6JW3XyaEdyFd9p</i>.
+            </div>
+          </div>
           <div>
-            In this step, your USDEBT (Wormhole) tokens locks into the USDEBT
-            Solana minting contract, and new authentic USDEBT Solana coins are
-            minted. These coins represent the authentic USDEBT coins that are
-            transacted throughout the Solana ecosystem. You will notice the same
-            USDEBT logo as Ethereum, but the contract address on the Solana
-            network is <i>5gAfJFu2nDUjceQJ4uKnkNEN94xEiF6JW3XyaEdyFd9p</i>.
-            <br />
             Congratulations! You have now bridged your USDEBT Ethereum coins to
             Solana!
           </div>
