@@ -134,10 +134,21 @@ const Home: NextPage = () => {
 
   return (
     <SimpleBar forceVisible="x" autoHide={true} className="w-full h-screen">
-      <main className="z-40 w-full h-full min-h-screen bg-[#0C0B0E] text-white">
+      <main className="z-40 w-full h-full min-h-screen bg-[#0C0B0E] text-white pb-10 md:pb-0">
         <div className="mx-auto">
           <div className="w-full text-center py-[50px] container">
-            <div className="relative flex flex-col items-center justify-start mt-32">
+            <div className="relative flex flex-col items-center justify-start gap-4 mt-16">
+              <div className="w-full text-xl md:w-1/2">
+                If your USDEBT (Wormhole) balance is zero, bridge USDEBT from
+                Ethreum to Solana through Portal Bridge{" "}
+                <a
+                  href="https://portalbridge.com/advanced-tools/#/transfer"
+                  target="_blank"
+                >
+                  <u>click here</u>
+                </a>
+                .
+              </div>
               <div className="w-full md:w-1/2 flex items-start h-fit flex-col gap-5 bg-[#121015] px-8 py-10 rounded-lg">
                 <div className="flex gap-4">
                   <button
