@@ -4,12 +4,11 @@ import CustomModal from "../Modal";
 
 export default function Footer() {
   const [open, setOpen] = React.useState(false);
-  const [open2, setOpen2] = React.useState(false);
 
   return (
     <>
       <div
-        className={`w-full flex justify-center items-center z-10 gap-2 text-white relative md:fixed md:bottom-0 py-4`}
+        className={`w-full flex justify-center items-center z-10 gap-2 text-white relative pb-4`}
       >
         <DocumentTextIcon
           color="white"
