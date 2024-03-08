@@ -4,8 +4,6 @@ import {
   WalletModalProvider,
   WalletMultiButton,
 } from "@solana/wallet-adapter-react-ui";
-import Link from "next/link";
-import Image from "next/image";
 
 export default function Header() {
   const [isTop, setIsTop] = useState(false);
@@ -30,26 +28,10 @@ export default function Header() {
   }, []);
   return (
     <div
-      className={`w-full flex justify-between items-center px-2 md:px-12 py-8 z-50 header-style gap-4 text-white fixed`}
+      className={`w-full flex justify-end items-center px-2 md:px-12 py-8 z-50 header-style gap-4 text-white fixed ${
+        isTop ? "bg-black/10 backdrop-blur-sm" : ""
+      }`}
     >
-      <div className="flex gap-4 text-white pl-0 md:pl-4 justify-center items-center">
-        <Link href={"/"}>
-          <Image
-            src={"/logo.png"}
-            width={60}
-            height={60}
-            alt="logo"
-            className="rounded-full cursor-pointer"
-          />
-        </Link>
-        <Link href="/">Home</Link>
-        <a
-          href="https://portalbridge.com/advanced-tools/#/transfer"
-          target="_blank"
-        >
-          Bridge
-        </a>
-      </div>
       <div className="rounded-lg h-12 w-[200px] flex justify-center items-center bg-main_r">
         <WalletModalProvider>
           <WalletMultiButton className="text-white" />
