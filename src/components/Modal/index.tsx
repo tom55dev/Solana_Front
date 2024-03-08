@@ -21,7 +21,7 @@ const CustomModal: React.FC<ICustomModal> = ({ children, ...props }) => {
     >
       <div
         ref={props?.notCloseOnClickOutside ? null : ref}
-        className={`bg-black rounded-[8px] p-[15px] w-[90%] lg:w-1/3 gap-5 flex flex-col shadow-[2px_0_1px_rgba(150,150,150,0.5)] text-white border-2 border-white ${
+        className={`bg-black rounded-[8px] p-[15px] w-[90%] overflow-auto max-h-[90%] lg:w-1/3 gap-5 flex flex-col shadow-[2px_0_1px_rgba(150,150,150,0.5)] text-white border-2 border-white ${
           props.className ? `${props.className}` : ""
         }`}
       >
