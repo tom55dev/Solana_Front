@@ -15,6 +15,7 @@ import {
 import { OLD_TOKEN, NEW_TOKEN } from "../lib/constant";
 
 import { GlobalPool } from "../lib/types";
+import CustomModal from "../components/Modal";
 
 export interface NftItem {
   mint: string;
@@ -38,6 +39,7 @@ const Home: NextPage = () => {
   const [isDeposit, setIsDeposit] = useState(true);
   const [oldTokenSupply, setOldTokenSupply] = useState("0");
   const [newTokenSupply, setNewTokenSupply] = useState("0");
+  const [open, setOpen] = useState(false);
 
   const sign = async () => {
     try {
@@ -133,14 +135,20 @@ const Home: NextPage = () => {
   };
 
   return (
-    <SimpleBar forceVisible="x" autoHide={true} className="w-full h-screen">
-      <main className="z-40 w-full h-full min-h-screen bg-[#0C0B0E] text-white pb-10 md:pb-0">
+    <>
+      {/* <SimpleBar forceVisible="x" autoHide={true} className="w-full"> */}
+      <main className="z-40 w-full bg-[#0C0B0E] text-white pb-0 md:pb-0">
         <div className="mx-auto">
           <div className="w-full text-center py-[50px] container">
-            <div className="relative flex flex-col items-center justify-start gap-4 mt-16">
-              <div className="w-full text-xl md:w-1/2">
+            <div className="relative flex flex-col items-center justify-start gap-1 mt-16">
+              <div
+                className={`w-full text-xl md:w-1/2 ${
+                  wallet.connected ? "" : "hidden"
+                }`}
+              >
                 If your USDEBT (Wormhole) balance is zero, bridge USDEBT from
-                Ethreum to Solana through Portal Bridge{" "}
+                <br />
+                Ethereum to Solana through Portal Bridge{" "}
                 <a
                   href="https://portalbridge.com/advanced-tools/#/transfer"
                   target="_blank"
@@ -150,23 +158,28 @@ const Home: NextPage = () => {
                 .
               </div>
               <div className="w-full md:w-1/2 flex items-start h-fit flex-col gap-5 bg-[#121015] px-8 py-10 rounded-lg">
-                <div className="flex gap-4">
-                  <button
-                    className={`rounded-lg w-[100px] h-10 px-4 py-3 flex justify-center items-center ${
-                      !isDeposit ? "bg-main_rb" : "bg-main_r"
-                    }`}
-                    onClick={() => setIsDeposit(true)}
-                  >
-                    Deposit
-                  </button>
-                  <button
-                    className={`rounded-lg w-[100px] h-10 px-4 py-3 flex justify-center items-center ${
-                      isDeposit ? "bg-main_rb" : "bg-main_r"
-                    }`}
-                    onClick={() => setIsDeposit(false)}
-                  >
-                    Redeem
-                  </button>
+                <div className="flex items-center justify-between w-full">
+                  <div className="flex gap-4">
+                    <button
+                      className={`rounded-lg w-[100px] h-10 px-4 py-3 flex justify-center items-center ${
+                        !isDeposit ? "bg-main_rb" : "bg-main_r"
+                      }`}
+                      onClick={() => setIsDeposit(true)}
+                    >
+                      Deposit
+                    </button>
+                    <button
+                      className={`rounded-lg w-[100px] h-10 px-4 py-3 flex justify-center items-center ${
+                        isDeposit ? "bg-main_rb" : "bg-main_r"
+                      }`}
+                      onClick={() => setIsDeposit(false)}
+                    >
+                      Redeem
+                    </button>
+                  </div>
+                  <div className="cursor-pointer" onClick={() => setOpen(true)}>
+                    How to Use
+                  </div>
                 </div>
                 <div className="flex flex-col w-full gap-4">
                   <div className="flex items-center justify-between">
@@ -192,7 +205,6 @@ const Home: NextPage = () => {
                           </span>
                         </>
                       )}
-                      <DocumentDuplicateIcon className="w-4 h-4 text-[#46424C]" />
                     </div>
                     <div className="flex flex-col items-end justify-center gap-2">
                       <div className="text-[#46424C]">My Balance</div>
@@ -260,7 +272,7 @@ const Home: NextPage = () => {
                   <div className="flex flex-col w-full gap-2 bg-[#19171E] rounded-lg p-4">
                     <div className="flex items-center justify-between">
                       <span>
-                        <b>Total USDEBT</b>(Wormhole):
+                        <b>Total USDEBT</b>&nbsp;(Wormhole):
                       </span>
                       <b>{oldTokenSupply}</b>
                     </div>
@@ -285,7 +297,37 @@ const Home: NextPage = () => {
           </div>
         )}
       </main>
-    </SimpleBar>
+      {/* </SimpleBar> */}
+      <CustomModal open={open} setOpen={setOpen}>
+        <h1 className="font-bold text-center">How to Use</h1>
+        <div className="flex flex-col gap-2">
+          <h2>1. Bridging from Ethereum to Solana</h2>
+          <div>
+            Bridge USDEBT from Ethereum to Solana through PortalBridge.com. In
+            this step, your USDEBT ERC-20 coins lock into the portal bridge
+            smart contract, and a new Portal wrapped USDEBT token gets minted on
+            Solana. This newly wrapped Portal token is referred to as USDEBT
+            (Wormhole). You will notice the USDEBT Wormhole token logo as : Go
+            to{" "}
+            <a href="https://portalbridge.com/">
+              <u>https://portalbridge.com/</u>
+            </a>
+          </div>
+          <h2>2. Mint authentic USDEBT Solana (SPL) coins</h2>
+          <div>
+            In this step, your USDEBT (Wormhole) tokens locks into the USDEBT
+            Solana minting contract, and new authentic USDEBT Solana coins are
+            minted. These coins represent the authentic USDEBT coins that are
+            transacted throughout the Solana ecosystem. You will notice the same
+            USDEBT logo as Ethereum, but the contract address on the Solana
+            network is <i>5gAfJFu2nDUjceQJ4uKnkNEN94xEiF6JW3XyaEdyFd9p</i>.
+            <br />
+            Congratulations! You have now bridged your USDEBT Ethereum coins to
+            Solana!
+          </div>
+        </div>
+      </CustomModal>
+    </>
   );
 };
 
