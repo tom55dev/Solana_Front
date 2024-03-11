@@ -7,11 +7,17 @@ import { ToastContainer } from "react-toastify";
 import "simplebar-react/dist/simplebar.min.css";
 import "../styles/globals.css";
 import Footer from "../components/Footer";
+import Head from "next/head";
 
 function SimpleJackpot({ Component, pageProps }) {
   const [loading, setLoading] = useState(false);
   return (
-    <Wallet>
+    <>
+      <Head>
+        <link rel="icon" href="/logo.png" />
+        <title>USDEBT Solana Mint</title>
+      </Head>
+      <Wallet>
         <Header />
         <Component
           {...pageProps}
@@ -20,7 +26,8 @@ function SimpleJackpot({ Component, pageProps }) {
         />
         <ToastContainer style={{ fontSize: 14 }} />
         <Footer />
-    </Wallet>
+      </Wallet>
+    </>
   );
 }
 

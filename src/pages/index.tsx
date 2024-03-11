@@ -35,7 +35,9 @@ const Home: NextPage = () => {
   const [oldToken, setOldToken] = useState(OLD_TOKEN);
   const [newToken, setNewToken] = useState(NEW_TOKEN);
   const [oldTokenAmount, setOldTokenAmount] = useState("0");
+  const [realOldTokenAmount, setRealOldTokenAmount] = useState(0);
   const [newTokenAmount, setNewTokenAmount] = useState("0");
+  const [realNewTokenAmount, setRealNewTokenAmount] = useState(0);
   const [isDeposit, setIsDeposit] = useState(true);
   const [oldTokenSupply, setOldTokenSupply] = useState("0");
   const [newTokenSupply, setNewTokenSupply] = useState("0");
@@ -64,6 +66,8 @@ const Home: NextPage = () => {
       let result = await getTokenBalance(anchorWallet, oldToken, newToken);
       setOldTokenAmount(result.oldTokenBalance);
       setNewTokenAmount(result.newTokenBalance);
+      setRealOldTokenAmount(result.unformatOldTokenBalance);
+      setRealNewTokenAmount(result.unformatNewTokenBalance);
     }
   };
 
@@ -170,7 +174,7 @@ const Home: NextPage = () => {
                       className={`rounded-lg w-[100px] h-10 px-4 py-3 flex justify-center items-center ${
                         !isDeposit ? "bg-main_rb" : "bg-main_r"
                       }`}
-                      onClick={() => setIsDeposit(true)}
+                      onClick={() =>{ setIsDeposit(true), setAmount(realOldTokenAmount)}}
                     >
                       Deposit
                     </button>
@@ -178,12 +182,12 @@ const Home: NextPage = () => {
                       className={`rounded-lg w-[100px] h-10 px-4 py-3 flex justify-center items-center ${
                         isDeposit ? "bg-main_rb" : "bg-main_r"
                       }`}
-                      onClick={() => setIsDeposit(false)}
+                      onClick={() => {setIsDeposit(false), setAmount(realNewTokenAmount)}}
                     >
                       Redeem
                     </button>
                   </div>
-                  <div className="cursor-pointer" onClick={() => setOpen(true)}>
+                  <div className="cursor-pointer" onClick={() => {setOpen(true)}}>
                     How to Use
                   </div>
                 </div>
@@ -215,7 +219,19 @@ const Home: NextPage = () => {
                     <div className="flex flex-col items-end justify-center gap-2">
                       <div className="text-[#46424C]">My Balance</div>
                       <div className="flex items-center justify-center gap-1">
-                        <WalletIcon className="w-4 h-4 text-[#46424C]" />
+                        <u
+                          className="cursor-pointer"
+                          onClick={() =>
+                            setAmount(
+                              isDeposit
+                                ? Number(realOldTokenAmount)
+                                : Number(realNewTokenAmount)
+                            )
+                          }
+                        >
+                          Max
+                        </u>
+                        <WalletIcon className="w-4 h-4 ml-2 text-[#46424C]" />
                         <span>
                           {isDeposit ? oldTokenAmount : newTokenAmount}
                         </span>
