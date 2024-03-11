@@ -215,7 +215,19 @@ const Home: NextPage = () => {
                     <div className="flex flex-col items-end justify-center gap-2">
                       <div className="text-[#46424C]">My Balance</div>
                       <div className="flex items-center justify-center gap-1">
-                        <WalletIcon className="w-4 h-4 text-[#46424C]" />
+                        <u
+                          className="cursor-pointer"
+                          onClick={() =>
+                            setAmount(
+                              isDeposit
+                                ? Number(oldTokenAmount)
+                                : Number(newTokenAmount)
+                            )
+                          }
+                        >
+                          MAX
+                        </u>
+                        <WalletIcon className="w-4 h-4 ml-2 text-[#46424C]" />
                         <span>
                           {isDeposit ? oldTokenAmount : newTokenAmount}
                         </span>
