@@ -150,7 +150,7 @@ const Home: NextPage = () => {
                 <b>
                   This smart contract allows the creation of
                   <br />
-                  authentic USDEBT Solana meme coins from your USDEBT Ethereum meme coins.
+                   authentic USDEBT Solana meme coins from your USDEBT Ethereum meme coins.
                 </b>
               </div>
               <div className={`${wallet.connected ? "" : "hidden"}`}>
