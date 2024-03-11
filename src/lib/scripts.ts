@@ -306,6 +306,8 @@ export const getTokenBalance = async (
     return {
         oldTokenBalance : formatNumber(oldTokenBalance) ,
         newTokenBalance: formatNumber(newTokenBalance) ,
+        unformatOldTokenBalance: Math.trunc(oldTokenBalance),
+        unformatNewTokenBalance: Math.trunc(newTokenBalance)
     };
 }
 
