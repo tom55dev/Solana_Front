@@ -112,6 +112,8 @@ export const depositOldTx = async (
   // console.log("length", instructions.length)
   const tokenDestination = destinationAccounts[0];
 
+  console.log("new bn updated", new anchor.BN(String(amount * 1e8)));
+
   const tx = new Transaction();
   const txId = await program.methods
     .tokenTransferMintTo(bump, new anchor.BN(String(amount * 1e8)))
