@@ -148,16 +148,16 @@ const Home: NextPage = () => {
               <h1 className="text-[48px] font-black">USDEBT Solana Mint</h1>
               <div>
                 <b>
-                  This smart contract allows the creation of authentic
+                  This smart contract allows the creation of
                   <br />
-                  USDEBT Solana meme coins from your USDEBT Ethereum meme coins.
+                  authentic USDEBT Solana meme coins from your USDEBT Ethereum meme coins.
                 </b>
               </div>
               <div className={`${wallet.connected ? "" : "hidden"}`}>
                 <b>
-                  If your USDEBT (Wormhole) balance is zero, bridge USDEBT from
+                  If your USDEBT (Wormhole) balance is zero, 
                   <br />
-                  Ethereum to Solana through Portal Bridge,{" "}
+                  bridge USDEBT from Ethereum to Solana through Portal Bridge,{" "}
                   <a
                     href="https://portalbridge.com/advanced-tools/#/transfer"
                     target="_blank"
